@@ -42,7 +42,7 @@ train_df = train_df[~train_df['patient_id'].isin(patient_ids_to_remove)].reset_i
 print("Cleaned DataFrame:")
 print(train_df.head())
 
-------------------> changed
+#------------------> changed
 ##### CLASS DISTRIBUTION
 
 plt.style.use('Solarize_Light2')
@@ -72,7 +72,7 @@ plt.show()
 
 print('Train Size = {}'.format(len(train_df)))
 print('Test Size = {}'.format(len(test_df)))
-<-----------------------
+#<-----------------------
 
 train_images = glob("/kaggle/input/mayo-clinic-strip-ai/train/*")
 test_images = glob("/kaggle/input/mayo-clinic-strip-ai/test/*")

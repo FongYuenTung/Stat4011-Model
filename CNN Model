@@ -42,21 +42,37 @@ train_df = train_df[~train_df['patient_id'].isin(patient_ids_to_remove)].reset_i
 print("Cleaned DataFrame:")
 print(train_df.head())
 
+------------------> changed
 ##### CLASS DISTRIBUTION
 
 plt.style.use('Solarize_Light2')
 labels = train_df.groupby('label')['label'].count().div(len(train_df)).mul(100)
-centers = train_df.groupby("center_id")['center_id'].count().div(len(train_df)).mul(100)
+counts = train_df['label'].value_counts()  # Get counts for each class
 
-fig, ax = plt.subplots(1,2, figsize=(16,5))
-sns.barplot(x=labels.index, y=labels.values, ax=ax[0])
-ax[0].set_title("Distribution of a target variable"), ax[0].set_ylabel("%")
-sns.barplot(x=centers.index, y=centers.values, ax=ax[1])
-ax[1].set_title("Images per clinic center"), ax[1].set_ylabel("%")
+# Create a single plot for the distribution of the target variable
+plt.figure(figsize=(8, 5))
+bar_plot = sns.barplot(x=labels.index, y=labels.values)
+plt.title("Distribution of a Target Variable")
+plt.ylabel("%")
+plt.xlabel("Label")
+
+# Set y-axis limits to increase the length of the bars
+plt.ylim(0, 80)  
+
+# Adding labels to each bar with adjusted spacing
+for index, p in enumerate(bar_plot.patches):
+    label = labels.index[index]
+    count = counts[label]
+    percentage = int(labels[label])
+    bar_plot.annotate(f'{count} ({percentage}%)',
+                      (p.get_x() + p.get_width() / 2., p.get_height() + 2),  # Adjusted y position
+                      ha='center', va='bottom', fontsize=10)
+
 plt.show()
 
 print('Train Size = {}'.format(len(train_df)))
 print('Test Size = {}'.format(len(test_df)))
+<-----------------------
 
 train_images = glob("/kaggle/input/mayo-clinic-strip-ai/train/*")
 test_images = glob("/kaggle/input/mayo-clinic-strip-ai/test/*")
